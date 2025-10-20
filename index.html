@@ -88,12 +88,10 @@
                         <li><a href="#" class="nav-item" data-page="kehadiran"><i data-feather="check-square"></i> Kehadiran</a></li>
                         <li><a href="#" class="nav-item" data-page="obrolan"><i data-feather="message-square"></i> Obrolan</a></li>
                         <li><a href="#" class="nav-item" data-page="yume"><i data-feather="star"></i> Belajar dengan Yume</a></li>
+                        <li><a href="#" class="nav-item" data-page="pengaturan"><i data-feather="settings"></i> Pengaturan</a></li>
+                        <li><a href="#" id="logout-btn" class="nav-item"><i data-feather="log-out"></i> Keluar</a></li>
                     </ul>
-                    <div class="sidebar-footer">
-                         <a href="#" class="nav-item" data-page="pengaturan"><i data-feather="settings"></i> Pengaturan</a>
-                         <a href="#" id="logout-btn" class="nav-item"><i data-feather="log-out"></i> Keluar</a>
-                    </div>
-                </aside>
+                    </aside>
                 
                 <main class="main-content-area">
                     <header class="dashboard-header">
@@ -135,8 +133,18 @@
                                     <div class="panel-footer"><a href="#">Lihat Semua Notifikasi</a></div>
                                 </div>
                             </div>
-                            <img src="https://placehold.co/100x100/FADADD/1E2A78?text=U" alt="Foto Profil" class="profile-pic">
-                        </div>
+                            
+                            <div class="profile-pic-wrapper">
+                                <img src="https://placehold.co/100x100/FADADD/1E2A78?text=U" alt="Foto Profil" class="profile-pic">
+                                <div id="profile-panel" class="profile-panel">
+                                    <img src="https://placehold.co/100x100/FADADD/1E2A78?text=U" alt="Foto Profil" class="profile-panel-pic">
+                                    <h4 class="profile-panel-name">MUHAMMAD PUTRA</h4>
+                                    <p class="profile-panel-campus">Politeknik Negeri Samarinda</p>
+                                    <p class="profile-panel-status">Mahasiswa</p>
+                                    <p class="profile-panel-nim">PROFESSIONAL</p>
+                                </div>
+                            </div>
+                            </div>
                     </header>
 
                     <div class="page-content-wrapper">
@@ -152,13 +160,13 @@
                                         <div class="yume-mascot"><svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><g transform="translate(100 100)"><path d="M54.6,-48.7C69.3,-32.2,78.8,-11.1,78.2,9.8C77.5,30.7,66.6,51.3,49.8,63.1C33,74.9,10.3,77.9,-12.3,73.6C-34.8,69.2,-57.2,57.5,-69.5,39.3C-81.8,21.1,-84.1,-3.6,-76.9,-23.5C-69.7,-43.3,-53,-58.3,-35.1,-65.4C-17.2,-72.5,1.8,-71.7,21.1,-65.3C40.4,-58.9,50,-47.9,54.6,-48.7Z" fill="#FFC0CB"></path></g></svg></div>
                                     </div>
                                     <div class="card weather-card">
-                                        <div id="weather-icon"><i data-feather="loader" class="spin"></i></div>
-                                        <div class="weather-details">
-                                            <div id="weather-location">Memuat lokasi...</div>
+                                        <div id="weather-location" class="location-info">Memuat lokasi...</div>
+                                        <div class="temp-and-desc">
+                                            <div id="weather-icon"><i data-feather="loader" class="spin"></i></div>
                                             <div id="weather-temp">-°C</div>
                                         </div>
                                         <div id="weather-desc">Mencari data...</div>
-                                    </div>
+                                        </div>
                                     <div class="card quest-card">
                                         <h4><i data-feather="target"></i> Daily Quest</h4>
                                         <p>Selesaikan 2 modul Fisika Dasar hari ini untuk mendapatkan 50XP!</p>

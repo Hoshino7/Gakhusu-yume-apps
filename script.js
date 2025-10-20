@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    
+
     // ELEMEN GLOBAL
     const splashScreen = document.getElementById('splash-screen');
     const loginScreen = document.getElementById('login-screen');
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const backToLoginBtn = document.getElementById('back-to-login-btn');
     const registerForm = document.getElementById('register-form');
     const closePopupBtn = document.getElementById('close-popup-btn');
-    
+
     // Inisialisasi Feather Icons
     feather.replace();
 
@@ -33,8 +33,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     registerForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        // Di sini Anda akan menambahkan logika register yang sebenarnya
-        // Untuk sekarang, kita langsung ke sukses
         registerScreen.classList.remove('active');
         successPopup.classList.add('show');
     });
@@ -43,97 +41,90 @@ document.addEventListener('DOMContentLoaded', function() {
         successPopup.classList.remove('show');
         setTimeout(() => {
             mainAppScreen.classList.add('active');
-            // Muat data dashboard
             getWeather();
-            renderCalendar(); 
-            renderWeeklySummary(currentDate); 
+            renderCalendar();
+            renderWeeklySummary(currentDate);
         }, 500);
     });
-    
+
     // --- LOGIKA TOMBOL KELUAR (LOGOUT) ---
     const logoutBtn = document.getElementById('logout-btn');
     logoutBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        // Sembunyikan semua layar dan popup
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.querySelectorAll('.popup-overlay').forEach(p => p.classList.remove('show'));
-        
-        // Tampilkan splash screen lagi, lalu login
         splashScreen.classList.add('active');
         setTimeout(() => {
             splashScreen.classList.remove('active');
             loginScreen.classList.add('active');
-        }, 1500); // Waktu lebih singkat untuk logout
+        }, 1500);
     });
 
     // --- LOGIKA UTAMA APLIKASI (SETELAH LOGIN) ---
 
     // ELEMEN APLIKASI UTAMA
-    // --- PERBAIKAN 4: Ubah target dari #sidebar-menu ke .sidebar ---
-    const sidebar = document.querySelector('.sidebar'); 
+    const sidebar = document.querySelector('.sidebar');
     const pages = document.querySelectorAll('.page');
     const notificationBellWrapper = document.querySelector('.notification-bell-wrapper');
     const notificationPanel = document.getElementById('notification-panel');
-    const sesiFokusBtn = document.getElementById('sesi-fokus-btn'); 
-    const yumeWelcomePopup = document.getElementById('yume-welcome-popup'); 
-    const yumeSalamKenalBtn = document.getElementById('yume-salam-kenal-btn'); 
+    const sesiFokusBtn = document.getElementById('sesi-fokus-btn');
+    const yumeWelcomePopup = document.getElementById('yume-welcome-popup');
+    const yumeSalamKenalBtn = document.getElementById('yume-salam-kenal-btn');
 
     // NAVIGASI HALAMAN (SIDEBAR)
-    // --- PERBAIKAN 4: Pasang listener di .sidebar (seluruh <aside>) ---
-    sidebar.addEventListener('click', (e) => {
-        e.preventDefault();
+     sidebar.addEventListener('click', (e) => {
+        // Cek apakah yang diklik adalah link logout
+        const logoutLink = e.target.closest('#logout-btn');
+        if (logoutLink) {
+            // Biarkan listener logoutBtn yang menangani
+            return;
+        }
+
         const navItem = e.target.closest('.nav-item');
         if (!navItem) return;
-        
-        // --- Logika untuk tombol Keluar di-handle terpisah ---
-        if (navItem.id === 'logout-btn') return; 
+
+        // Cegah aksi default hanya jika bukan link logout
+        e.preventDefault();
 
         const pageId = navItem.dataset.page;
         if (!pageId) return;
 
         navigateToPage(pageId);
     });
-    
-    // --- Fungsi untuk navigasi dan memicu event halaman ---
+
+
     function navigateToPage(pageId) {
-        // Hapus kelas 'active' dari semua menu item dan halaman
-        // --- PERBAIKAN 4: Query seluruh .sidebar, bukan hanya #sidebar-menu ---
         sidebar.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
         pages.forEach(page => page.classList.remove('active'));
 
-        // Tambahkan kelas 'active' ke menu item dan halaman yang diklik
-        // --- PERBAIKAN 4: Query seluruh .sidebar ---
         const activeNavItem = sidebar.querySelector(`.nav-item[data-page="${pageId}"]`);
         if (activeNavItem) {
             activeNavItem.classList.add('active');
         }
         document.getElementById(`${pageId}-page`).classList.add('active');
-        
-        // --- Logika khusus saat halaman diaktifkan ---
+
         if (pageId === 'yume') {
             checkFirstTimeYume();
         } else if (pageId === 'schedule') {
-            renderCalendar(); // Render ulang kalender jika dibuka
+            renderCalendar();
             renderWeeklySummary(currentDate);
         } else if (pageId === 'nilai') {
-            renderNilaiPage(); // Render grafik nilai
+            renderNilaiPage();
         } else if (pageId === 'materi') {
-            initMateriPage(); // Inisialisasi pop-up materi
+            initMateriPage();
         }
     }
-    
-    // --- Logika "Mulai Sesi Fokus" ---
+
     sesiFokusBtn.addEventListener('click', () => {
         navigateToPage('yume');
     });
 
-    // --- Logika Pop-up Yume ---
     function checkFirstTimeYume() {
         if (!localStorage.getItem('hasMetYume')) {
             yumeWelcomePopup.classList.add('show');
         }
     }
-    
+
     yumeSalamKenalBtn.addEventListener('click', () => {
         yumeWelcomePopup.classList.remove('show');
         localStorage.setItem('hasMetYume', 'true');
@@ -143,48 +134,19 @@ document.addEventListener('DOMContentLoaded', function() {
     notificationBellWrapper.addEventListener('mouseenter', () => notificationPanel.classList.add('show'));
     notificationBellWrapper.addEventListener('mouseleave', () => notificationPanel.classList.remove('show'));
 
+    // LOGIKA POP-UP PROFIL
+    const profilePicWrapper = document.querySelector('.profile-pic-wrapper');
+    const profilePanel = document.getElementById('profile-panel');
+
+    profilePicWrapper.addEventListener('mouseenter', () => profilePanel.classList.add('show'));
+    profilePicWrapper.addEventListener('mouseleave', () => profilePanel.classList.remove('show'));
+
     // --- LOGIKA CUACA (DIPERBARUI DENGAN IKON) ---
     function getWeather() {
-        // PENTING: Anda perlu API Key dari layanan cuaca (mis: OpenWeatherMap, WeatherAPI)
-        const API_KEY = 'GANTI_DENGAN_API_KEY_ANDA'; // <-- Ganti ini!
-        const KOTA = 'Balikpapan'; // Bisa juga diganti berdasarkan geolokasi
-
-        /*
-        // --- INI ADALAH KODE UNTUK MEMANGGIL API LIVE ---
-        // (Dikomenti agar tidak error karena API Key belum ada)
-        const API_URL = `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${KOTA}&aqi=no&lang=id`;
-
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(position => {
-                const { latitude, longitude } = position.coords;
-                const API_URL_GEO = `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${latitude},${longitude}&aqi=no&lang=id`;
-                
-                fetch(API_URL_GEO)
-                    .then(response => response.json())
-                    .then(data => {
-                        updateWeatherDisplay(data.location.name, data.current.temp_c, data.current.condition.text, data.current.condition.icon);
-                    })
-                    .catch(err => {
-                        console.error("Error fetching weather:", err);
-                        setDummyWeather();
-                    });
-
-            }, () => {
-                // Jika geolokasi ditolak, gunakan data dummy
-                setDummyWeather('Lokasi tidak diizinkan');
-            });
-        } else {
-            // Jika browser tidak support geolokasi
-            setDummyWeather('Browser tidak support');
-        }
-        */
-
-        // --- HAPUS FUNGSI DI BAWAH INI JIKA API LIVE SUDAH AKTIF ---
-        // Fungsi dummy sementara (menggantikan yang lama)
-        setDummyWeather(); 
+        // ... (Kode API tetap sama) ...
+        setDummyWeather();
     }
-    
-    // BARU: Fungsi untuk update tampilan cuaca
+
     function updateWeatherDisplay(location, temp, description, iconCode = null) {
         const weatherIconEl = document.getElementById('weather-icon'),
               locationEl = document.getElementById('weather-location'),
@@ -195,34 +157,34 @@ document.addEventListener('DOMContentLoaded', function() {
         tempEl.textContent = `${temp}°C`;
         descEl.textContent = description;
 
-        let iconFeather = 'cloud'; // Default icon
-        if (iconCode) {
-            // Contoh mapping icon codes ke Feather Icons
-            if (iconCode.includes('sunny') || iconCode.includes('clear')) {
-                iconFeather = 'sun';
-            } else if (iconCode.includes('cloudy') || iconCode.includes('overcast')) {
-                iconFeather = 'cloud';
-            } else if (iconCode.includes('rain') || iconCode.includes('drizzle')) {
-                iconFeather = 'cloud-rain';
-            } else if (iconCode.includes('thunder')) {
-                iconFeather = 'cloud-lightning';
-            } else if (iconCode.includes('snow') || iconCode.includes('sleet')) {
-                iconFeather = 'cloud-snow';
-            }
+        let iconFeather = 'sun'; // Default icon
+
+        if (iconCode === 'sunny') {
+            iconFeather = 'sun';
+        } else if (iconCode === 'slash') {
+            iconFeather = 'slash';
+        } else if (iconCode && (iconCode.includes('cloudy') || iconCode.includes('overcast'))) {
+             iconFeather = 'cloud';
+        } else if (iconCode && (iconCode.includes('rain') || iconCode.includes('drizzle'))) {
+             iconFeather = 'cloud-rain';
+        } else if (iconCode && iconCode.includes('thunder')) {
+             iconFeather = 'cloud-lightning';
+        } else if (iconCode && (iconCode.includes('snow') || iconCode.includes('sleet'))) {
+             iconFeather = 'cloud-snow';
         }
+
         weatherIconEl.innerHTML = `<i data-feather="${iconFeather}"></i>`;
         feather.replace(); // Refresh icons
     }
 
-    // Fungsi dummy sementara (menggunakan updateWeatherDisplay)
     function setDummyWeather(errorMsg = null) {
         if (errorMsg) {
-            updateWeatherDisplay(errorMsg, '-', 'Tidak Tersedia', 'slash'); // Slash icon for error
+            updateWeatherDisplay(errorMsg, '-', 'Tidak Tersedia', 'slash');
         } else {
             updateWeatherDisplay('Jakarta, ID', '29', 'Cerah Berawan', 'sunny');
         }
     }
-    
+
     // --- LOGIKA AI CHAT (GEMINI) ---
     const yumeChatInput = document.getElementById('yume-chat-input');
     const yumeSendBtn = document.getElementById('yume-send-btn');
@@ -237,55 +199,27 @@ document.addEventListener('DOMContentLoaded', function() {
         const messageText = yumeChatInput.value.trim();
         if (messageText === '') return;
 
-        // 1. Tampilkan pesan user
         appendMessage(messageText, 'sent', 'yume-chat-messages');
         yumeChatInput.value = '';
-
-        // 2. Tampilkan loading
         appendMessage('Yume sedang berpikir...', 'received loading', 'yume-chat-messages');
 
-        // 3. Panggil Backend (bukan Gemini langsung!)
-        // PENTING: Anda TIDAK BISA memanggil API Gemini langsung dari sini.
-        // Anda harus membuat backend (misal: Node.js, Python Flask)
-        // Backend Anda akan menerima pesan ini, lalu memanggil API Gemini
-        // dengan API Key Anda secara aman, lalu mengembalikan responnya.
-        
-        // fetch('https://URL_BACKEND_ANDA.com/chat', {
-        //     method: 'POST',
-        //     headers: { 'Content-Type': 'application/json' },
-        //     body: JSON.stringify({ prompt: messageText })
-        // })
-        // .then(res => res.json())
-        // .then(data => {
-        //     // Hapus loading
-        //     yumeChatMessages.querySelector('.loading').remove();
-        //     // Tampilkan respon AI
-        //     appendMessage(data.response, 'received', 'yume-chat-messages');
-        // })
-        
-        // --- HAPUS INI JIKA BACKEND SUDAH ADA ---
-        // Respon dummy sementara
         setTimeout(() => {
             yumeChatMessages.querySelector('.loading').remove();
             const dummyResponse = "Maaf, koneksi ke otak Yume sedang sibuk! (Backend belum terhubung). Tapi jika terhubung, Yume akan menjawab: '" + messageText + "'.";
             appendMessage(dummyResponse, 'received', 'yume-chat-messages');
         }, 1500);
-        // --- ----------------------------- ---
     }
-    
+
     function appendMessage(text, type, containerId) {
         const messageDiv = document.createElement('div');
         messageDiv.classList.add('message', ...type.split(' '));
         messageDiv.innerHTML = `<p>${text}</p>`;
         const container = document.getElementById(containerId);
         container.appendChild(messageDiv);
-        container.scrollTop = container.scrollHeight; // Auto scroll
+        container.scrollTop = container.scrollHeight;
     }
 
-
     // --- LOGIKA KALENDER DAN JADWAL ---
-
-    // ELEMEN KALENDER
     const monthYearEl = document.getElementById('month-year');
     const daysGrid = document.getElementById('days-grid');
     const prevMonthBtn = document.getElementById('prev-month-btn');
@@ -294,138 +228,67 @@ document.addEventListener('DOMContentLoaded', function() {
     const closeSchedulePopupBtn = document.getElementById('close-schedule-popup-btn');
     const popupDateEl = document.getElementById('popup-date');
     const popupEventsEl = document.getElementById('popup-events');
-    const weeklySummaryContent = document.getElementById('weekly-summary-content'); 
-    
-    let currentDate = new Date(2025, 9, 20); // Set to October 2025 for consistent demo
-
-    // DATA JADWAL (DUMMY) DENGAN TIPE
+    const weeklySummaryContent = document.getElementById('weekly-summary-content');
+    let currentDate = new Date(2025, 9, 20);
     const scheduleData = {
-        '2025-10-21': [
-            { 
-                type: 'matkul',
-                subject: 'Pemrograman Dasar',
-                lecturer: 'Dr . Soeharto',
-                time: '08:00 - 14:00',
-                topic: 'Input & Output, Variabel'
-            }
-        ],
-        '2025-10-24': [
-            {
-                type: 'matkul',
-                subject: 'Kalkulus Lanjutan',
-                lecturer: 'Prof. Budiono',
-                time: '10:00 - 12:00',
-                topic: 'Integral Lipat Dua'
-            },
-            {
-                type: 'matkul',
-                subject: 'Struktur Data',
-                lecturer: 'Ibu Siti',
-                time: '14:00 - 16:00',
-                topic: 'Implementasi Linked List Array'
-            }
-        ],
-        '2025-10-29': [
-            {
-                type: 'event',
-                subject: 'Seminar AI in Education',
-                lecturer: 'Guest Speaker',
-                time: '13:00 - 15:00',
-                topic: 'Exploring the future of learning In Gakhusa Yume Apps'
-            }
-        ],
-        '2025-11-05': [
-             {
-                type: 'libur',
-                subject: 'Libur Nasional',
-                lecturer: '-',
-                time: 'Seharian',
-                topic: 'Maulid Nabi Muhammad SAW'
-            }
-        ]
+        '2025-10-21': [{ type: 'matkul', subject: 'Pemrograman Dasar', lecturer: 'Dr . Soeharto', time: '08:00 - 14:00', topic: 'Input & Output, Variabel' }],
+        '2025-10-24': [{ type: 'matkul', subject: 'Kalkulus Lanjutan', lecturer: 'Prof. Budiono', time: '10:00 - 12:00', topic: 'Integral Lipat Dua' }, { type: 'matkul', subject: 'Struktur Data', lecturer: 'Ibu Siti', time: '14:00 - 16:00', topic: 'Implementasi Linked List Array' }],
+        '2025-10-29': [{ type: 'event', subject: 'Seminar AI in Education', lecturer: 'Guest Speaker', time: '13:00 - 15:00', topic: 'Exploring the future of learning In Gakhusa Yume Apps' }],
+        '2025-11-05': [{ type: 'libur', subject: 'Libur Nasional', lecturer: '-', time: 'Seharian', topic: 'Maulid Nabi Muhammad SAW' }]
     };
 
     function renderCalendar() {
         const year = currentDate.getFullYear();
         const month = currentDate.getMonth();
-        
-        const firstDayOfMonth = new Date(year, month, 1).getDay(); // 0=Sunday, 1=Monday
+        const firstDayOfMonth = new Date(year, month, 1).getDay();
         const lastDateOfMonth = new Date(year, month + 1, 0).getDate();
         const lastDateOfLastMonth = new Date(year, month, 0).getDate();
-
         const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
         monthYearEl.innerText = `${months[month]} ${year}`;
-
         let daysHtml = "";
-        
-        // Loop untuk hari dari bulan sebelumnya (inactive)
-        let startDay = (firstDayOfMonth === 0) ? 6 : firstDayOfMonth - 1; // 0=Sen, 6=Min
+        let startDay = (firstDayOfMonth === 0) ? 6 : firstDayOfMonth - 1;
         for (let i = startDay; i > 0; i--) {
             daysHtml += `<div class="inactive">${lastDateOfLastMonth - i + 1}</div>`;
         }
-        
-        // Loop untuk hari di bulan ini
         for (let i = 1; i <= lastDateOfMonth; i++) {
             const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
-            const dayOfWeek = new Date(year, month, i).getDay(); // 0=Min, 6=Sab
-            
+            const dayOfWeek = new Date(year, month, i).getDay();
             let classes = "";
             let today = new Date();
             if (i === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
                 classes += "today ";
             }
-
             let eventType = null;
             if (scheduleData[dateStr]) {
-                // Jika ada data, gunakan tipe event pertama
                 eventType = scheduleData[dateStr][0].type;
             } else if (dayOfWeek === 0 || dayOfWeek === 6) {
-                // BARU: Jika Sabtu (6) atau Minggu (0) DAN tidak ada event lain
-                eventType = 'libur'; // Tandai sebagai 'libur'
-                classes += "has-event "; // Tambahkan class agar titik muncul
+                eventType = 'libur';
+                classes += "has-event ";
             }
-            
             if (eventType) {
                 classes += `has-event event-${eventType} `;
             }
-            
             daysHtml += `<div class="${classes.trim()}" data-date="${dateStr}">${i}</div>`;
         }
-        
         daysGrid.innerHTML = daysHtml;
     }
-    
-    // --- Fungsi untuk Render Rekapan Mingguan ---
+
     function renderWeeklySummary(date) {
         let html = '';
         const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
         const startOfWeek = new Date(date);
-        startOfWeek.setDate(date.getDate() - (date.getDay() === 0 ? 6 : date.getDay() - 1)); // Mulai dari Senin
-
+        startOfWeek.setDate(date.getDate() - (date.getDay() === 0 ? 6 : date.getDay() - 1));
         for (let i = 0; i < 7; i++) {
             const currentDay = new Date(startOfWeek);
             currentDay.setDate(startOfWeek.getDate() + i);
-            
             const dayName = days[currentDay.getDay()];
-            // Abaikan Sabtu dan Minggu di rekapan
             if (currentDay.getDay() === 0 || currentDay.getDay() === 6) continue;
-            
             const dateStr = `${currentDay.getFullYear()}-${String(currentDay.getMonth() + 1).padStart(2, '0')}-${String(currentDay.getDate()).padStart(2, '0')}`;
             const events = scheduleData[dateStr];
-            
             html += `<div class="summary-day"><h5>${dayName}, ${currentDay.getDate()}</h5>`;
-            
             if (events && events.some(e => e.type === 'matkul')) {
                 events.filter(e => e.type === 'matkul').forEach(event => {
-                    html += `
-                        <div class="summary-item">
-                            <span class="summary-time">${event.time.split(' - ')[0]}</span>
-                            <div class="summary-details">
-                                <div class="summary-subject">${event.subject}</div>
-                                <div class="summary-lecturer">${event.lecturer}</div>
-                            </div>
-                        </div>
-                    `;
+                    html += `<div class="summary-item"><span class="summary-time">${event.time.split(' - ')[0]}</span><div class="summary-details"><div class="summary-subject">${event.subject}</div><div class="summary-lecturer">${event.lecturer}</div></div></div>`;
                 });
             } else {
                 html += `<div class="no-schedule">Tidak ada jadwal</div>`;
@@ -435,42 +298,23 @@ document.addEventListener('DOMContentLoaded', function() {
         weeklySummaryContent.innerHTML = html;
     }
 
-
     function showScheduleDetail(dateStr) {
         const events = scheduleData[dateStr];
         const dayOfWeek = new Date(dateStr + 'T00:00:00').getDay();
-
-        // Jika tidak ada event DAN bukan Sabtu/Minggu, jangan tampilkan popup
         if (!events && dayOfWeek !== 0 && dayOfWeek !== 6) return;
-
         const dateObj = new Date(dateStr + 'T00:00:00');
         popupDateEl.innerText = dateObj.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-        
         let eventsHtml = '';
         if (events) {
             events.forEach(event => {
                 let borderColorClass = `border-${event.type}`;
-                eventsHtml += `
-                    <div class="event-item ${borderColorClass}">
-                        <h4>${event.subject}</h4>
-                        <div class="event-detail"><i data-feather="clock"></i> ${event.time}</div>
-                        <div class="event-detail"><i data-feather="user"></i> ${event.lecturer}</div>
-                        <div class="event-detail"><i data-feather="file-text"></i> ${event.topic}</div>
-                    </div>
-                `;
+                eventsHtml += `<div class="event-item ${borderColorClass}"><h4>${event.subject}</h4><div class="event-detail"><i data-feather="clock"></i> ${event.time}</div><div class="event-detail"><i data-feather="user"></i> ${event.lecturer}</div><div class="event-detail"><i data-feather="file-text"></i> ${event.topic}</div></div>`;
             });
         } else if (dayOfWeek === 0 || dayOfWeek === 6) {
-            // Tampilkan pesan libur jika Sabtu/Minggu
-             eventsHtml = `
-                <div class="event-item border-libur">
-                    <h4>Libur Akhir Pekan</h4>
-                    <div class="event-detail"><i data-feather="coffee"></i> Waktunya istirahat!</div>
-                </div>
-            `;
+             eventsHtml = `<div class="event-item border-libur"><h4>Libur Akhir Pekan</h4><div class="event-detail"><i data-feather="coffee"></i> Waktunya istirahat!</div></div>`;
         }
-        
         popupEventsEl.innerHTML = eventsHtml;
-        feather.replace(); // Refresh icons inside the popup
+        feather.replace();
         scheduleDetailPopup.classList.add('show');
     }
 
@@ -492,7 +336,7 @@ document.addEventListener('DOMContentLoaded', function() {
             showScheduleDetail(dayElement.dataset.date);
         }
     });
-    
+
     closeSchedulePopupBtn.addEventListener('click', () => {
         scheduleDetailPopup.classList.remove('show');
     });
@@ -502,35 +346,29 @@ document.addEventListener('DOMContentLoaded', function() {
             scheduleDetailPopup.classList.remove('show');
         }
     });
-    
-    
+
     // --- LOGIKA HALAMAN MATERI (POPUP) ---
     const materiDetailPopup = document.getElementById('materi-detail-popup');
     const closeMateriPopupBtn = document.getElementById('close-materi-popup-btn');
-    
+
     function initMateriPage() {
         document.querySelectorAll('.materi-card').forEach(card => {
             card.addEventListener('click', () => {
-                // Di sini Anda akan mengambil data asli
-                // Untuk sekarang, kita tampilkan popup-nya saja
                 materiDetailPopup.classList.add('show');
             });
         });
     }
-    
+
     closeMateriPopupBtn.addEventListener('click', () => {
         materiDetailPopup.classList.remove('show');
     });
-    
-    // Logika Tab di Pop-up Materi
+
     const materiTabs = document.querySelector('.materi-popup-tabs');
     materiTabs.addEventListener('click', (e) => {
         const tabBtn = e.target.closest('.tab-link');
         if (!tabBtn) return;
-        
         materiTabs.querySelectorAll('.tab-link').forEach(t => t.classList.remove('active'));
         tabBtn.classList.add('active');
-        
         const tabContentId = tabBtn.dataset.tab;
         materiDetailPopup.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
         document.getElementById(tabContentId).classList.add('active');
@@ -540,112 +378,64 @@ document.addEventListener('DOMContentLoaded', function() {
     let nilaiChart = null;
     function renderNilaiPage() {
         const ctx = document.getElementById('nilai-chart').getContext('2d');
-        
-        // Data dummy
         const data = {
             labels: ['Kehadiran (5%)', 'Kuis (30%)', 'UTS (30%)', 'UAS (35%)'],
             datasets: [{
                 label: 'Nilai Anda',
-                data: [100, 85, 78, 90], // Nilai (0-100)
-                backgroundColor: [
-                    'rgba(217, 70, 111, 0.7)', // Pink
-                    'rgba(30, 42, 120, 0.7)',  // Biru gelap
-                    'rgba(255, 190, 11, 0.7)', // Kuning
-                    'rgba(42, 157, 143, 0.7)'  // Hijau teal
-                ],
-                borderColor: [
-                    'rgba(217, 70, 111, 1)',
-                    'rgba(30, 42, 120, 1)',
-                    'rgba(255, 190, 11, 1)',
-                    'rgba(42, 157, 143, 1)'
-                ],
+                data: [100, 85, 78, 90],
+                backgroundColor: ['rgba(217, 70, 111, 0.7)', 'rgba(30, 42, 120, 0.7)', 'rgba(255, 190, 11, 0.7)', 'rgba(42, 157, 143, 0.7)'],
+                borderColor: ['rgba(217, 70, 111, 1)', 'rgba(30, 42, 120, 1)', 'rgba(255, 190, 11, 1)', 'rgba(42, 157, 143, 1)'],
                 borderWidth: 1
             }]
         };
-
-        // Hancurkan chart lama jika ada, agar tidak tumpang tindih
         if (nilaiChart) {
             nilaiChart.destroy();
         }
-
-        // --- PERBAIKAN GRAFIK: Ganti tipe chart ke 'doughnut' ---
         nilaiChart = new Chart(ctx, {
-            type: 'doughnut', // Ganti dari 'bar' ke 'doughnut'
+            type: 'doughnut',
             data: data,
             options: {
                 responsive: true,
-                maintainAspectRatio: false, 
+                maintainAspectRatio: false,
                 plugins: {
                     legend: {
-                        position: 'right', // Posisikan legend di kanan
-                        labels: {
-                            color: 'var(--color-text-secondary)', // Warna teks legend
-                            font: {
-                                size: 12, // Ukuran font legend
-                            }
-                        }
+                        position: 'right',
+                        labels: { color: 'var(--color-text-secondary)', font: { size: 12 } }
                     },
-                    title: {
-                        display: false, // Tidak perlu judul tambahan di chart
-                    }
+                    title: { display: false }
                 },
-                // Hapus pengaturan scales untuk doughnut chart
             }
         });
     }
-    
+
     // --- LOGIKA HALAMAN PENGATURAN ---
     const themePinkBtn = document.getElementById('theme-pink-btn');
     const themeGreenBtn = document.getElementById('theme-green-btn');
     const themeBlueBtn = document.getElementById('theme-blue-btn');
     const deleteAccountBtn = document.getElementById('delete-account-btn');
-    
     const themeButtons = [themePinkBtn, themeGreenBtn, themeBlueBtn];
-    
-    // Palet Tema
     const themes = {
-        pink: {
-            '--color-primary': '#D9466F',
-            '--color-primary-light': '#FFF0F6',
-            '--color-primary-extra-light': '#FADADD',
-        },
-        green: {
-            '--color-primary': '#A9C96D', // Kuning-hijau
-            '--color-primary-light': '#F6FAE0',
-            '--color-primary-extra-light': '#E9F5C7',
-        },
-        blue: {
-            '--color-primary': '#5B86E5',
-            '--color-primary-light': '#EBF0FF',
-            '--color-primary-extra-light': '#D6E0FF',
-        }
+        pink: { '--color-primary': '#D9466F', '--color-primary-light': '#FFF0F6', '--color-primary-extra-light': '#FADADD' },
+        green: { '--color-primary': '#A9C96D', '--color-primary-light': '#F6FAE0', '--color-primary-extra-light': '#E9F5C7' },
+        blue: { '--color-primary': '#5B86E5', '--color-primary-light': '#EBF0FF', '--color-primary-extra-light': '#D6E0FF' }
     };
-    
+
     themeButtons.forEach(btn => {
         btn.addEventListener('click', () => {
             const themeName = btn.dataset.theme;
             const themeColors = themes[themeName];
-            
-            // Terapkan warna
             for (const [key, value] of Object.entries(themeColors)) {
                 document.documentElement.style.setProperty(key, value);
             }
-            
-            // Update tombol aktif
             themeButtons.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
         });
     });
-    
+
     deleteAccountBtn.addEventListener('click', () => {
         const confirmation = confirm("APAKAH ANDA YAKIN? Menghapus akun bersifat permanen dan tidak dapat dibatalkan. Semua data Anda akan hilang.");
         if (confirmation) {
-            // PENTING: Di sinilah Anda memanggil backend untuk menghapus data user.
-            // fetch('https://URL_BACKEND_ANDA.com/delete-account', { method: 'DELETE' })
-            // .then(...)
-            
             alert("Akun Anda telah dihapus.");
-            // Paksa logout
             logoutBtn.click();
         }
     });

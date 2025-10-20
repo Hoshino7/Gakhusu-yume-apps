@@ -78,7 +78,6 @@ body {
 
 /* Splash, Login, Register Screens Styling */
 #splash-screen, #login-screen, #register-screen {
-    /* BARU: Menggunakan variable */
     background: linear-gradient(160deg, #FF8FAB, var(--color-primary));
     color: var(--color-white);
 }
@@ -122,13 +121,22 @@ body {
 .sidebar { background-color: var(--color-white); padding: 1.5rem; display: flex; flex-direction: column; border-right: 1px solid var(--color-border); }
 .sidebar-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 2.5rem; font-size: 1.25rem; font-weight: 700; color: var(--color-accent); }
 .sidebar-header svg path { transition: fill 0.3s ease; }
-.sidebar-menu { list-style: none; flex-grow: 1; }
+
+/* --- PERUBAHAN 1 (Tombol Sidebar): Hapus footer dan sesuaikan menu --- */
+.sidebar-menu {
+    list-style: none;
+    padding-left: 0;
+    flex-grow: 1; /* Pastikan menu tetap mengisi ruang */
+}
+/* Hapus styling untuk .sidebar-footer karena tombol dipindah */
+/* .sidebar-footer { ... } */
+/* ------------------------------------------------------------------ */
+
 .sidebar-menu .nav-item { display: flex; align-items: center; gap: 1rem; padding: 0.9rem 1rem; border-radius: 10px; margin-bottom: 0.5rem; text-decoration: none; color: var(--color-text-secondary); transition: background-color 0.2s ease, color 0.2s ease; text-align: left; font-weight: 500; }
 .sidebar-menu .nav-item i { width: 20px; height: 20px; }
 .sidebar-menu .nav-item.active, .sidebar-menu .nav-item:hover { background-color: var(--color-primary-light); color: var(--color-primary); }
-.sidebar-footer .nav-item { display: flex; align-items: center; gap: 1rem; padding: 0.9rem 1rem; text-decoration: none; color: var(--color-text-secondary); }
-/* --- PERBAIKAN: Style 'active' juga berlaku untuk footer --- */
-.sidebar-footer .nav-item.active, .sidebar-footer .nav-item:hover { background-color: var(--color-primary-light); color: var(--color-primary); }
+
+
 .main-content-area { background-color: var(--color-bg); display: flex; flex-direction: column; }
 .dashboard-header { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 2rem; background-color: var(--color-white); border-bottom: 1px solid var(--color-border); }
 .greeting { text-align: left; }
@@ -139,7 +147,7 @@ body {
 .notification-bell-wrapper { position: relative; }
 .notification-bell { cursor: pointer; color: var(--color-text-light); position: relative; }
 .notification-dot { position: absolute; top: -2px; right: -2px; width: 8px; height: 8px; background-color: var(--color-primary); border-radius: 50%; border: 1px solid var(--color-white); transition: background-color 0.3s ease; }
-.profile-pic { width: 40px; height: 40px; border-radius: 50%; }
+.profile-pic { width: 40px; height: 40px; border-radius: 50%; cursor: pointer; }
 
 /* Notifikasi Panel */
 .notification-panel { position: absolute; top: calc(100% + 15px); right: 0; width: 360px; background-color: var(--color-white); border-radius: 16px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12); border: 1px solid var(--color-border); opacity: 0; visibility: hidden; transform: translateY(10px); transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease; z-index: 100; }
@@ -153,6 +161,60 @@ body {
 .notif-icon { color: var(--color-accent); }
 .notif-content p { font-size: 0.9rem; line-height: 1.5; color: var(--color-text-secondary); text-align: left; }
 .panel-footer { padding: 1rem; text-align: center; border-top: 1px solid var(--color-border); }
+
+/* --- PERUBAHAN 2 (Pop-up Profil): Style Baru --- */
+.profile-pic-wrapper {
+    position: relative;
+}
+.profile-panel {
+    position: absolute;
+    top: calc(100% + 15px);
+    right: 0;
+    width: 280px; /* Lebar panel */
+    background-color: var(--color-white);
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    border: 1px solid var(--color-border);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+    z-index: 100;
+    padding: 1.5rem;
+    text-align: center;
+}
+.profile-panel.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+.profile-panel-pic {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+    object-fit: cover; /* Pastikan gambar mengisi lingkaran */
+}
+.profile-panel-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    margin-bottom: 0.25rem;
+    line-height: 1.3;
+}
+.profile-panel-campus,
+.profile-panel-status,
+.profile-panel-nim {
+    font-size: 0.9rem;
+    color: var(--color-text-light);
+    margin-bottom: 0.25rem; /* Tambahkan sedikit jarak antar baris */
+}
+.profile-panel-nim {
+    font-weight: 600; /* Sedikit lebih tebal */
+    color: var(--color-text-secondary); /* Warna yang sedikit berbeda */
+    margin-top: 0.5rem; /* Jarak lebih banyak dari status */
+}
+/* -------------------------------------------------------- */
 
 /* Page Content Wrapper */
 .page-content-wrapper { flex-grow: 1; padding: 2rem; overflow-y: auto; }
@@ -171,7 +233,7 @@ body {
 .btn-yume { background-color: var(--color-white); color: var(--color-primary); border: none; }
 .yume-mascot svg { width: 160px; height: 160px; display: block; transform: translateY(20px) translateX(10px); }
 
-/* --- PERBAIKAN GRAFIK & CUACA: Layout Kartu Cuaca --- */
+/* Layout Kartu Cuaca */
 .weather-card {
     display: flex;
     flex-direction: column; /* Ubah ke column agar lebih rapi */
@@ -211,7 +273,6 @@ body {
     font-size: 1rem; /* Ukuran deskripsi lebih kecil dari suhu */
     opacity: 0.9;
 }
-/* ------------------------------------------------ */
 
 .tasks-card ul, .notification-list-card ul { list-style: none; padding-left: 0; }
 .tasks-card li, .notification-list-card li { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid var(--color-bg-light); font-size: 0.9rem; color: var(--color-text-light); }
@@ -225,15 +286,15 @@ body {
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 1.5rem;
-    /* height: 100%; */ /* <-- PERBAIKAN 1: Dihapus agar tidak memotong sidebar & kalender */
+    /* height: 100%; */ 
     align-items: start;
 }
 .calendar-container {
     background-color: var(--color-white);
-    padding: 1.5rem; /* <-- PERBAIKAN 1: Dikurangi dari 2rem */
+    padding: 1.5rem; 
     border-radius: 16px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    /* height: 100%; */ /* <-- PERBAIKAN 1: Dihapus */
+    /* height: 100%; */ 
     display: flex;
     flex-direction: column;
 }
@@ -254,7 +315,7 @@ body {
 .days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem; height: 100%; }
 .days-grid div {
     height: auto;
-    min-height: 80px; /* <-- PERBAIKAN 1: Dikecilkan dari 90px */
+    min-height: 80px; 
     padding: 0.75rem;
     border: 1px solid var(--color-bg-light);
     border-radius: 10px;
@@ -337,17 +398,15 @@ body {
 .dosen-pic { width: 32px; height: 32px; border-radius: 50%; }
 .materi-popup { max-width: 600px; text-align: left; }
 
-/* --- PERBAIKAN 3: Bug Teks Materi (Popup) --- */
 #materi-popup-title {
-    margin-bottom: 0.25rem; /* Ditambahkan */
+    margin-bottom: 0.25rem;
 }
 #materi-popup-dosen {
     font-size: 1rem;
     color: var(--color-text-light);
     margin-bottom: 1.5rem;
-    margin-top: -0.5rem; /* Diubah dari -1rem */
+    margin-top: -0.5rem;
 }
-/* ------------------------------------------ */
 
 .materi-popup-tabs { display: flex; border-bottom: 2px solid var(--color-border); margin-bottom: 1.5rem; }
 .tab-link { background: none; border: none; padding: 0.75rem 1rem; cursor: pointer; font-family: 'Poppins'; font-size: 1rem; font-weight: 500; color: var(--color-text-light); border-bottom: 3px solid transparent; }
@@ -367,7 +426,7 @@ body {
 .nilai-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
 .nilai-ipk-card, .nilai-keaktifan-card { grid-column: span 1; text-align: center; }
 
-/* --- PERBAIKAN GRAFIK & CUACA: Ukuran Grafik --- */
+/* Ukuran Grafik */
 .nilai-chart-card {
     grid-column: 1 / -1;
     min-height: 300px; /* Kurangi min-height */
@@ -383,7 +442,6 @@ body {
     width: 100% !important;
     height: 100% !important;
 }
-/* ------------------------------------------- */
 
 .nilai-rekap-card { grid-column: 1 / -1; }
 .ipk-display { font-size: 4rem; font-weight: 700; color: var(--color-accent); line-height: 1.2; }
@@ -471,9 +529,8 @@ body {
     .weekdays div { font-size: 0.8rem; }
     .days-grid div { height: 60px; padding: 0.5rem; }
 
-    /* --- PERBAIKAN GRAFIK & CUACA: Layout Cuaca Responsif --- */
+    /* Layout Cuaca Responsif */
     .weather-card { align-items: center; } /* Kembali ke tengah untuk mobile */
     .weather-card .temp-and-desc { flex-direction: column; gap: 0.25rem; }
     .weather-card #weather-icon { margin-right: 0; margin-bottom: 0.5rem; }
-    /* ---------------------------------------------------- */
 }
