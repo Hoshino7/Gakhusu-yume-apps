@@ -1,0 +1,368 @@
+/* Reset CSS dan Pengaturan Dasar */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background: #f0f2f5;
+}
+
+body {
+    font-family: 'Poppins', 'Noto Sans JP', sans-serif;
+    color: #333;
+    background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* Kontainer Utama Aplikasi (Jendela) */
+.app-window {
+    width: 95%;
+    max-width: 1400px;
+    height: 90vh;
+    min-height: 720px;
+    background-color: #F8F9FA;
+    position: relative;
+    display: flex;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.15);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+/* Pengaturan Layar (Screen) */
+.screen {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+    will-change: opacity, visibility;
+}
+.screen.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Splash, Login, Register Screens Styling */
+#splash-screen, #login-screen, #register-screen {
+    background: linear-gradient(160deg, #FF8FAB, #FB6B90);
+    color: white;
+}
+.auth-content { width: 100%; max-width: 400px; padding: 2rem; }
+.logo { margin-bottom: 1.5rem; }
+.app-title { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 2rem; letter-spacing: 0.2em; margin-bottom: 0.5rem; }
+.app-subtitle { font-family: 'Noto Sans JP', sans-serif; font-size: 1.25rem; font-weight: 400; margin-bottom: 2rem; }
+#splash-screen .loading-bar-container { width: 80%; max-width: 400px; height: 6px; background-color: rgba(255, 255, 255, 0.3); border-radius: 3px; overflow: hidden; margin-top: 4rem; }
+#splash-screen .loading-bar { width: 0%; height: 100%; background-color: white; border-radius: 3px; animation: loading 3s ease-out forwards; }
+@keyframes loading { from { width: 0%; } to { width: 100%; } }
+.button-group { width: 100%; display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem; }
+.btn { width: 100%; padding: 1rem; border: none; border-radius: 12px; font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 500; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease; display: flex; justify-content: center; align-items: center; gap: 0.75rem; }
+.btn:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
+.btn-email { background-color: #D9466F; color: white; }
+.btn-google { background-color: white; color: #444; border: 1px solid #eee; }
+.btn-google img { width: 18px; height: 18px; }
+.btn-apple { background-color: #000000; color: white; }
+.apple-icon { width: 20px; height: 20px; }
+.form-group { width: 100%; display: flex; flex-direction: column; gap: 0.8rem; }
+.form-group input { width: 100%; padding: 1rem; border: none; border-radius: 12px; background-color: rgba(255, 255, 255, 0.2); font-family: 'Poppins', sans-serif; font-size: 0.95rem; color: white; outline: none; transition: background-color 0.3s ease; }
+.form-group input::placeholder { color: rgba(255, 255, 255, 0.7); }
+.form-group input:focus { background-color: rgba(255, 255, 255, 0.3); border: 1px solid rgba(255, 255, 255, 0.5); }
+.btn-register { background-color: #D9466F; color: white; margin-top: 1rem; }
+.btn-back { background: none; border: none; color: rgba(255, 255, 255, 0.9); font-family: 'Poppins', sans-serif; cursor: pointer; margin-top: 1.5rem; font-size: 0.9rem; transition: color 0.2s ease; }
+.btn-back:hover { color: white; text-decoration: underline; }
+
+/* Pop-up Umum */
+.popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+.popup-overlay.show { opacity: 1; visibility: visible; }
+.popup-content { background-color: white; color: #333; padding: 2rem; border-radius: 16px; width: 90%; max-width: 380px; text-align: center; transform: scale(0.8); transition: transform 0.3s ease; position: relative; }
+.popup-overlay.show .popup-content { transform: scale(1); }
+#success-popup .mascot { margin-bottom: -1rem; transform: translateY(-60px); height: 80px; }
+.popup-title { font-size: 1.5rem; font-weight: 700; color: #1E2A78; margin-bottom: 0.5rem; }
+.popup-message { font-size: 1rem; color: #555; margin-bottom: 1.5rem; line-height: 1.5; }
+#success-popup .btn { background-color: #D9466F; color: white; }
+
+/* ===== MAIN APP / DASHBOARD STYLING ===== */
+#main-app-screen {
+    opacity: 0;
+    visibility: hidden;
+}
+#main-app-screen.active {
+    opacity: 1;
+    visibility: visible;
+}
+.dashboard-desktop { display: grid; grid-template-columns: 260px 1fr; grid-template-rows: 1fr; width: 100%; height: 100%; }
+.sidebar { background-color: white; padding: 1.5rem; display: flex; flex-direction: column; border-right: 1px solid #e9ecef; }
+.sidebar-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 2.5rem; font-size: 1.25rem; font-weight: 700; color: #1E2A78; }
+.sidebar-menu { list-style: none; flex-grow: 1; }
+.sidebar-menu .nav-item { display: flex; align-items: center; gap: 1rem; padding: 0.9rem 1rem; border-radius: 10px; margin-bottom: 0.5rem; text-decoration: none; color: #495057; transition: background-color 0.2s ease, color 0.2s ease; text-align: left; font-weight: 500; }
+.sidebar-menu .nav-item i { width: 20px; height: 20px; }
+.sidebar-menu .nav-item.active, .sidebar-menu .nav-item:hover { background-color: #FFF0F6; color: #D9466F; }
+.sidebar-footer .nav-item { display: flex; align-items: center; gap: 1rem; padding: 0.9rem 1rem; text-decoration: none; color: #495057; }
+.main-content-area { background-color: #F8F9FA; display: flex; flex-direction: column; }
+.dashboard-header { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 2rem; background-color: white; border-bottom: 1px solid #e9ecef; }
+.greeting { text-align: left; }
+.header-actions { display: flex; align-items: center; gap: 1.5rem; }
+.search-bar { display: flex; align-items: center; gap: 0.5rem; background: #F1F3F5; padding: 0.6rem 1rem; border-radius: 10px; }
+.search-bar i { color: #6C757D; }
+.search-bar input { border: none; background: none; outline: none; font-family: 'Poppins'; }
+.notification-bell-wrapper { position: relative; }
+.notification-bell { cursor: pointer; color: #6C757D; position: relative; }
+.notification-dot { position: absolute; top: -2px; right: -2px; width: 8px; height: 8px; background-color: #D9466F; border-radius: 50%; border: 1px solid white; }
+.profile-pic { width: 40px; height: 40px; border-radius: 50%; }
+
+/* Notifikasi Panel */
+.notification-panel { position: absolute; top: calc(100% + 15px); right: 0; width: 360px; background-color: white; border-radius: 16px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12); border: 1px solid #e9ecef; opacity: 0; visibility: hidden; transform: translateY(10px); transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease; z-index: 100; }
+.notification-panel.show { opacity: 1; visibility: visible; transform: translateY(0); }
+.panel-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; border-bottom: 1px solid #e9ecef; }
+.panel-header h4 { font-size: 1rem; margin-bottom: 0; color: #1E2A78; }
+.panel-header a { font-size: 0.8rem; text-decoration: none; color: #D9466F; font-weight: 500; }
+.notification-list { list-style: none; max-height: 300px; overflow-y: auto; }
+.notification-list li { display: flex; gap: 1rem; padding: 1rem 1.5rem; border-bottom: 1px solid #e9ecef; cursor: pointer; transition: background-color 0.2s ease; }
+.notification-list li.unread { background-color: #FFF0F6; }
+.notif-icon { color: #1E2A78; }
+.notif-content p { font-size: 0.9rem; line-height: 1.5; color: #495057; text-align: left; }
+.panel-footer { padding: 1rem; text-align: center; border-top: 1px solid #e9ecef; }
+
+/* Page Content Wrapper */
+.page-content-wrapper { flex-grow: 1; padding: 2rem; overflow-y: auto; }
+.page { display: none; }
+.page.active { display: block; animation: fadeIn 0.5s ease-in-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Dashboard Grid & Cards */
+.main-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 1.5rem; }
+.grid-col { display: flex; flex-direction: column; gap: 1.5rem; }
+.card { background-color: white; border-radius: 16px; padding: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: left; }
+.card h4 { display: flex; align-items: center; gap: 0.5rem; font-size: 1rem; margin-bottom: 1rem; color: #495057; }
+.card h4 i { width: 18px; height: 18px; color: #1E2A78; }
+.yume-card { display: flex; align-items: center; justify-content: space-between; gap: 1rem; background: linear-gradient(135deg, #FFC0CB, #FF8FAB); color: white; overflow: hidden; }
+.yume-mascot svg { width: 160px; height: 160px; display: block; transform: translateY(20px) translateX(10px); }
+.weather-card { display: flex; align-items: center; gap: 1rem; background: linear-gradient(135deg, #1E2A78, #3e4b9b); color: white; }
+.tasks-card ul, .notification-list-card ul { list-style: none; padding-left: 0; }
+.tasks-card li, .notification-list-card li { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid #F1F3F5; font-size: 0.9rem; color: #6C757D; }
+.due-date { background-color: #FFF0F6; color: #D9466F; padding: 0.25rem 0.5rem; border-radius: 8px; font-size: 0.8rem; font-weight: 500; }
+
+/* ===== SCHEDULE / CALENDAR PAGE STYLING ===== */
+#schedule-page {
+    height: 100%;
+}
+.schedule-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1.5rem;
+    height: 100%;
+    align-items: start;
+}
+.calendar-container {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+#month-year {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1E2A78;
+}
+.month-nav {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    color: #6C757D;
+    transition: color 0.2s ease;
+}
+.month-nav:hover { color: #D9466F; }
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem;
+    flex-grow: 1;
+}
+.weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem;
+}
+.weekdays div {
+    font-weight: 700;
+    color: #495057;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e9ecef;
+}
+.days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem;
+    height: 100%;
+}
+.days-grid div {
+    height: auto;
+    min-height: 90px;
+    padding: 0.75rem;
+    border: 1px solid #f1f3f5;
+    border-radius: 10px;
+    text-align: left;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+    position: relative;
+    cursor: pointer;
+}
+.days-grid div.inactive { color: #ced4da; }
+.days-grid div:not(.inactive):hover { background-color: #FFF0F6; }
+.days-grid div.today {
+    background-color: #FADADD;
+    color: #D9466F;
+    font-weight: 700;
+}
+/* Penanda Titik untuk Event di Kalender */
+.days-grid div.has-event::after {
+    content: '';
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+.days-grid div.event-matkul::after {
+    background-color: #343a40; /* Hitam */
+}
+.days-grid div.event-libur::after {
+    background-color: #e63946; /* Merah */
+}
+.days-grid div.event-event::after {
+    background-color: #ffbe0b; /* Kuning */
+}
+/* Penyesuaian untuk hari ini agar titik terlihat */
+.days-grid div.today.has-event::after {
+     border: 1px solid white;
+}
+
+/* Pop-up Detail Jadwal */
+.schedule-popup { max-width: 450px; }
+.close-btn { position: absolute; top: 1rem; right: 1rem; background: none; border: none; cursor: pointer; color: #6C757D; }
+.close-btn:hover { color: #333; }
+#popup-date { font-size: 1.3rem; margin-bottom: 1.5rem; }
+.event-item {
+    text-align: left;
+    padding: 1rem;
+    border: 1px solid #e9ecef;
+    border-left-width: 5px;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+.event-item.border-matkul { border-left-color: #343a40; }
+.event-item.border-libur { border-left-color: #e63946; }
+.event-item.border-event { border-left-color: #ffbe0b; }
+.event-item h4 { font-size: 1.1rem; color: #1E2A78; margin-bottom: 0.5rem; }
+.event-detail { display: flex; align-items: center; gap: 0.5rem; color: #495057; font-size: 0.9rem; margin-bottom: 0.25rem; }
+
+/* Schedule Sidebar */
+.schedule-sidebar {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.weekly-summary {
+    flex-grow: 1;
+}
+.summary-day {
+    margin-bottom: 1.5rem;
+}
+.summary-day:last-child {
+    margin-bottom: 0;
+}
+.summary-day h5 {
+    font-size: 0.9rem;
+    color: #6C757D;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e9ecef;
+}
+.summary-item {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+.summary-time {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #D9466F;
+    background-color: #FFF0F6;
+    padding: 0.5rem;
+    border-radius: 8px;
+    white-space: nowrap;
+}
+.summary-details {
+    line-height: 1.4;
+}
+.summary-subject {
+    font-weight: 500;
+    color: #1E2A78;
+}
+.summary-lecturer {
+    font-size: 0.85rem;
+    color: #6C757D;
+}
+.no-schedule {
+    font-style: italic;
+    color: #adb5bd;
+    font-size: 0.9rem;
+}
+.sidebar-mascot {
+    text-align: right;
+    margin-top: auto;
+    padding-top: 1rem;
+}
+.sidebar-mascot svg {
+    width: 150px;
+    height: 150px;
+    opacity: 0.7;
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 1200px) {
+    .app-window { width: 100%; height: 100%; min-height: 0; border-radius: 0; }
+}
+@media (max-width: 992px) {
+    .dashboard-desktop { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .main-content-area { grid-column: 1 / -1; }
+    .main-grid { grid-template-columns: 1fr; }
+    .schedule-layout { grid-template-columns: 1fr; }
+    .schedule-sidebar { display: none; }
+    .calendar-container { padding: 1.5rem; }
+    .days-grid div { height: 80px; font-size: 0.9rem; }
+}
+@media (max-width: 576px) {
+    .dashboard-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .header-actions { width: 100%; justify-content: space-between; }
+    .yume-card { flex-direction: column; text-align: center; }
+    .weekdays div { font-size: 0.8rem; }
+    .days-grid div { height: 60px; padding: 0.5rem; }
+}

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gakushu Yume - Impian Belajar</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Kontainer utama yang menyerupai jendela aplikasi desktop -->
+    <div class="app-window">
+
+        <!-- Splash Screen -->
+        <div id="splash-screen" class="screen active">
+            <div class="auth-content">
+                <svg class="logo" width="80" height="80" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="48" fill="white" fill-opacity="0.1"/>
+                    <path d="M50 25C35 25 25 50 50 50C75 50 65 25 50 25Z" fill="white"/>
+                    <path d="M50 75C35 75 25 50 50 50C75 50 65 75 50 75Z" fill="white" fill-opacity="0.6"/>
+                </svg>
+                <h1 class="app-title">GAKUSHU YUME</h1>
+                <h2 class="app-subtitle">学習夢</h2>
+                <div class="loading-bar-container">
+                    <div class="loading-bar"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Login Screen -->
+        <div id="login-screen" class="screen">
+            <div class="auth-content">
+                 <svg class="logo" width="60" height="60" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="48" fill="white" fill-opacity="0.1"/>
+                    <path d="M50 25C35 25 25 50 50 50C75 50 65 25 50 25Z" fill="white"/>
+                    <path d="M50 75C35 75 25 50 50 50C75 50 65 75 50 75Z" fill="white" fill-opacity="0.6"/>
+                </svg>
+                <h1 class="app-title">GAKUSHU YUME</h1>
+                <h2 class="app-subtitle">ようこそ!</h2>
+                <div class="button-group">
+                    <button id="email-register-btn" class="btn btn-email">Daftar Dengan Email</button>
+                    <button class="btn btn-google">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google Logo">
+                        Masuk Dengan Google
+                    </button>
+                    <button class="btn btn-apple">
+                        <svg class="apple-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M15.226 1.354c-.928-.02-1.815.3-2.583.89-1.013.75-1.802 2.04-2.14 3.33-.354 1.35-.118 2.74.618 3.78.8.97 2.03 1.54 3.26 1.54.19 0 .38-.02.57-.05.8-.13 1.57-.45 2.22-.92.2-.14.38-.3.55-.48-.09.06-.18.12-.27.18-1.02.65-2.2.98-3.43.94-1.26-.04-2.47-.46-3.45-1.2-1.03-.78-1.78-1.95-2.06-3.26-.29-1.35.03-2.79.87-3.87.82-1.07 2.07-1.77 3.4-1.93a4.23 4.23 0 011.84-.04c.82.16 1.59.54 2.22 1.08-.1-.08-.2-.15-.32-.22a4.5 4.5 0 00-2.4-1.03zM14.65 15.11c-.02 0-.04 0-.06 0-1.87-.09-3.4-1.76-3.4-3.66 0-2.02 1.63-3.66 3.63-3.66.13 0 .26.01.38.03-1.89.1-3.39 1.77-3.39 3.68s1.48 3.56 3.36 3.66c-.17 0-.34 0-.52-.05z"/></svg>
+                        Masuk Dengan Apple
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Register Screen -->
+        <div id="register-screen" class="screen">
+            <div class="auth-content">
+                <h2 class="screen-title">Buat Akun Baru</h2>
+                <p class="screen-subtitle">Mulai perjalanan belajarmu bersama Yume!</p>
+                <form id="register-form" class="form-group">
+                    <input type="text" placeholder="Nama Lengkap" required>
+                    <input type="text" placeholder="NIM (Nomor Induk Mahasiswa)" required>
+                    <input type="text" placeholder="Nama Kampus" required>
+                    <input type="email" placeholder="Email" required>
+                    <input type="password" placeholder="Buat Password" required>
+                    <input type="password" placeholder="Konfirmasi Password" required>
+                    <button type="submit" class="btn btn-register">Daftar Sekarang</button>
+                </form>
+                <button id="back-to-login-btn" class="btn-back">Sudah punya akun? Masuk</button>
+            </div>
+        </div>
+        
+        <!-- Main Application Screen (After Login) -->
+        <div id="main-app-screen" class="screen">
+             <div class="dashboard-desktop">
+                <!-- Sidebar -->
+                <aside class="sidebar">
+                    <div class="sidebar-header">
+                        <svg class="logo" width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M50 25C35 25 25 50 50 50C75 50 65 25 50 25Z" fill="#D9466F"/>
+                            <path d="M50 75C35 75 25 50 50 50C75 50 65 75 50 75Z" fill="#D9466F" fill-opacity="0.6"/>
+                        </svg>
+                        <span>Gakushu Yume</span>
+                    </div>
+                    <ul id="sidebar-menu" class="sidebar-menu">
+                        <li><a href="#" class="nav-item active" data-page="dashboard"><i data-feather="home"></i> Dashboard</a></li>
+                        <li><a href="#" class="nav-item" data-page="schedule"><i data-feather="calendar"></i> Jadwal</a></li>
+                        <li><a href="#" class="nav-item" data-page="materi"><i data-feather="book-open"></i> Materi</a></li>
+                        <li><a href="#" class="nav-item" data-page="nilai"><i data-feather="award"></i> Nilai</a></li>
+                        <li><a href="#" class="nav-item" data-page="kehadiran"><i data-feather="check-square"></i> Kehadiran</a></li>
+                        <li><a href="#" class="nav-item" data-page="obrolan"><i data-feather="message-square"></i> Obrolan</a></li>
+                        <li><a href="#" class="nav-item" data-page="yume"><i data-feather="star"></i> Belajar dengan Yume</a></li>
+                    </ul>
+                    <div class="sidebar-footer">
+                         <a href="#" class="nav-item"><i data-feather="settings"></i> Pengaturan</a>
+                         <a href="#" class="nav-item"><i data-feather="log-out"></i> Keluar</a>
+                    </div>
+                </aside>
+                
+                <!-- Main Content Area -->
+                <main class="main-content-area">
+                    <header class="dashboard-header">
+                        <div class="greeting">
+                            <h3 class="welcome-text">おかえり, Selamat Datang!</h3>
+                            <p class="user-name">Pengguna Baru</p>
+                        </div>
+                        <div class="header-actions">
+                            <div class="search-bar">
+                                <i data-feather="search"></i>
+                                <input type="text" placeholder="Cari materi atau tugas...">
+                            </div>
+                            <div class="notification-bell-wrapper">
+                                <div id="notification-bell" class="notification-bell">
+                                    <i data-feather="bell"></i>
+                                    <div class="notification-dot"></div>
+                                </div>
+                                <!-- Panel Notifikasi Pop-up -->
+                                <div id="notification-panel" class="notification-panel">
+                                    <div class="panel-header">
+                                        <h4>Notifikasi</h4>
+                                        <a href="#">Tandai semua dibaca</a>
+                                    </div>
+                                    <ul class="notification-list">
+                                        <li class="unread">
+                                            <div class="notif-icon"><i data-feather="book-open"></i></div>
+                                            <div class="notif-content">
+                                                <p><b>Dosen A</b> mengunggah materi baru di <b>Kalkulus Lanjut</b>.</p>
+                                                <small>Baru Saja</small>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="notif-icon"><i data-feather="message-square"></i></div>
+                                            <div class="notif-content">
+                                                <p><b>Andi</b> mengirimi Anda pesan: "Jangan lupa rapat kelompok jam 2 ya!"</p>
+                                                <small>2 jam lalu</small>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <div class="panel-footer"><a href="#">Lihat Semua Notifikasi</a></div>
+                                </div>
+                            </div>
+                            <img src="https://placehold.co/100x100/FADADD/1E2A78?text=U" alt="Foto Profil" class="profile-pic">
+                        </div>
+                    </header>
+
+                    <!-- Page Content Wrapper -->
+                    <div class="page-content-wrapper">
+                        <!-- Dashboard Page -->
+                        <div id="dashboard-page" class="page active">
+                             <div class="main-grid">
+                                <div class="grid-col">
+                                    <div class="card yume-card">
+                                        <div class="yume-text">
+                                            <h4>Hai, Aku Yume!</h4>
+                                            <p>Siap untuk memulai petualangan belajar yang seru hari ini?</p>
+                                            <button class="btn btn-yume">Mulai Sesi Fokus</button>
+                                        </div>
+                                        <div class="yume-mascot"><svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><g transform="translate(100 100)"><path d="M54.6,-48.7C69.3,-32.2,78.8,-11.1,78.2,9.8C77.5,30.7,66.6,51.3,49.8,63.1C33,74.9,10.3,77.9,-12.3,73.6C-34.8,69.2,-57.2,57.5,-69.5,39.3C-81.8,21.1,-84.1,-3.6,-76.9,-23.5C-69.7,-43.3,-53,-58.3,-35.1,-65.4C-17.2,-72.5,1.8,-71.7,21.1,-65.3C40.4,-58.9,50,-47.9,54.6,-48.7Z" fill="#FFC0CB"></path></g></svg></div>
+                                    </div>
+                                    <div class="card weather-card">
+                                        <div id="weather-icon"><i data-feather="loader" class="spin"></i></div>
+                                        <div class="weather-details">
+                                            <div id="weather-location">Memuat lokasi...</div>
+                                            <div id="weather-temp">-°C</div>
+                                        </div>
+                                        <div id="weather-desc">Mencari data...</div>
+                                    </div>
+                                    <div class="card quest-card">
+                                        <h4><i data-feather="target"></i> Daily Quest</h4>
+                                        <p>Selesaikan 2 modul Fisika Dasar hari ini untuk mendapatkan 50XP!</p>
+                                        <div class="progress-bar-quest"><div class="progress-quest" style="width: 25%;"></div></div>
+                                    </div>
+                                </div>
+                                <div class="grid-col">
+                                    <div class="card tasks-card">
+                                        <h4><i data-feather="alert-circle"></i> Tugas Mendatang</h4>
+                                        <ul>
+                                            <li><span>Laporan Praktikum Kimia</span> <span class="due-date">Besok</span></li>
+                                            <li><span>Makalah Sejarah</span> <span class="due-date">3 Hari Lagi</span></li>
+                                        </ul>
+                                    </div>
+                                    <div class="card notification-list-card">
+                                        <h4><i data-feather="bell"></i> Notifikasi Terbaru</h4>
+                                        <ul>
+                                            <li><span><b>Dosen A</b> mengunggah materi baru.</span> <span>Baru Saja</span></li>
+                                            <li><span><b>Andi</b> mengirimi Anda pesan.</span> <span>2 jam lalu</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Schedule Page -->
+                        <div id="schedule-page" class="page">
+                            <div class="calendar-container">
+                                <header class="calendar-header">
+                                    <button id="prev-month-btn" class="month-nav"><i data-feather="chevron-left"></i></button>
+                                    <h3 id="month-year"></h3>
+                                    <button id="next-month-btn" class="month-nav"><i data-feather="chevron-right"></i></button>
+                                </header>
+                                <div class="calendar-grid">
+                                    <div class="weekdays">
+                                        <div>Sen</div><div>Sel</div><div>Rab</div><div>Kam</div><div>Jum</div><div>Sab</div><div>Min</div>
+                                    </div>
+                                    <div id="days-grid" class="days-grid"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Placeholder pages for other menu items -->
+                        <div id="materi-page" class="page"><p>Halaman Materi akan ada di sini.</p></div>
+                        <div id="nilai-page" class="page"><p>Halaman Nilai akan ada di sini.</p></div>
+                        <div id="kehadiran-page" class="page"><p>Halaman Kehadiran akan ada di sini.</p></div>
+                        <div id="obrolan-page" class="page"><p>Halaman Obrolan akan ada di sini.</p></div>
+                        <div id="yume-page" class="page"><p>Halaman Belajar dengan Yume akan ada di sini.</p></div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Pop-up Sukses Pendaftaran -->
+    <div id="success-popup" class="popup-overlay">
+        <div class="popup-content">
+            <svg class="mascot" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><g transform="translate(50,50)"><path d="M36.6,-32.8C46.8,-21,54.1,-2.3,51.8,15.6C49.5,33.5,37.6,50.6,21.4,57.1C5.2,63.6,-15.2,59.5,-30.7,48.7C-46.1,37.8,-56.6,20.2,-57.8,-0.1C-58.9,-20.4,-50.7,-43.3,-36.8,-52.3C-22.9,-61.3,-3.3,-56.3,13.7,-48.3C30.7,-40.3,35,-30.3,36.6,-32.8Z" fill="#FFC0CB"/></g></svg>
+            <h3 class="popup-title">Pendaftaran Berhasil!</h3>
+            <p class="popup-message">Selamat datang di Gakushu Yume! Kamu selangkah lebih dekat untuk meraih impian belajarmu.</p>
+            <button id="close-popup-btn" class="btn">Lanjutkan</button>
+        </div>
+    </div>
+    
+    <!-- Pop-up Detail Jadwal -->
+    <div id="schedule-detail-popup" class="popup-overlay">
+         <div class="popup-content schedule-popup">
+            <button id="close-schedule-popup-btn" class="close-btn"><i data-feather="x"></i></button>
+            <h3 id="popup-date"></h3>
+            <div id="popup-events"></div>
+        </div>
+    </div>
+
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+</body>
+</html>
