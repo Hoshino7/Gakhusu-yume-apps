@@ -127,6 +127,8 @@ body {
 .sidebar-menu .nav-item i { width: 20px; height: 20px; }
 .sidebar-menu .nav-item.active, .sidebar-menu .nav-item:hover { background-color: var(--color-primary-light); color: var(--color-primary); }
 .sidebar-footer .nav-item { display: flex; align-items: center; gap: 1rem; padding: 0.9rem 1rem; text-decoration: none; color: var(--color-text-secondary); }
+/* --- PERBAIKAN: Style 'active' juga berlaku untuk footer --- */
+.sidebar-footer .nav-item.active, .sidebar-footer .nav-item:hover { background-color: var(--color-primary-light); color: var(--color-primary); }
 .main-content-area { background-color: var(--color-bg); display: flex; flex-direction: column; }
 .dashboard-header { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 2rem; background-color: var(--color-white); border-bottom: 1px solid var(--color-border); }
 .greeting { text-align: left; }
@@ -177,20 +179,19 @@ body {
 
 
 /* ===== SCHEDULE / CALENDAR PAGE STYLING ===== */
-/* BARU DITAMBAHKAN: Schedule Layout */
 .schedule-layout {
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 1.5rem;
-    height: 100%;
+    /* height: 100%; */ /* <-- PERBAIKAN 1: Dihapus agar tidak memotong sidebar & kalender */
     align-items: start;
 }
 .calendar-container {
     background-color: var(--color-white);
-    padding: 2rem;
+    padding: 1.5rem; /* <-- PERBAIKAN 1: Dikurangi dari 2rem */
     border-radius: 16px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    height: 100%;
+    /* height: 100%; */ /* <-- PERBAIKAN 1: Dihapus */
     display: flex;
     flex-direction: column;
 }
@@ -198,11 +199,29 @@ body {
 #month-year { font-size: 1.5rem; font-weight: 700; color: var(--color-accent); }
 .month-nav { background: none; border: none; cursor: pointer; padding: 0.5rem; color: var(--color-text-light); transition: color 0.2s ease; }
 .month-nav:hover { color: var(--color-primary); }
-.calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem; flex-grow: 1; }
+
+.calendar-grid { 
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem; 
+    flex-grow: 1; 
+}
+
 .weekdays { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem; }
 .weekdays div { font-weight: 700; color: var(--color-text-secondary); padding-bottom: 1rem; border-bottom: 2px solid var(--color-border); }
 .days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem; height: 100%; }
-.days-grid div { height: auto; min-height: 90px; padding: 0.75rem; border: 1px solid var(--color-bg-light); border-radius: 10px; text-align: left; font-weight: 500; transition: background-color 0.2s ease; position: relative; cursor: pointer; }
+.days-grid div {
+    height: auto;
+    min-height: 80px; /* <-- PERBAIKAN 1: Dikecilkan dari 90px */
+    padding: 0.75rem;
+    border: 1px solid var(--color-bg-light);
+    border-radius: 10px;
+    text-align: left;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+    position: relative;
+    cursor: pointer;
+}
 .days-grid div.inactive { color: #ced4da; }
 .days-grid div:not(.inactive):hover { background-color: var(--color-primary-light); }
 .days-grid div.today {
@@ -221,10 +240,9 @@ body {
     height: 6px;
     border-radius: 50%;
 }
-/* BARU: Warna titik diubah sesuai permintaan */
-.days-grid div.event-matkul::after { background-color: var(--color-green); } /* Hijau */
-.days-grid div.event-libur::after { background-color: var(--color-red); } /* Merah */
-.days-grid div.event-event::after { background-color: var(--color-yellow); } /* Kuning */
+.days-grid div.event-matkul::after { background-color: var(--color-green); }
+.days-grid div.event-libur::after { background-color: var(--color-red); }
+.days-grid div.event-event::after { background-color: var(--color-yellow); }
 .days-grid div.today.has-event::after { border: 1px solid var(--color-white); }
 
 /* Pop-up Detail Jadwal */
@@ -233,14 +251,13 @@ body {
 .close-btn:hover { color: var(--color-text-primary); }
 #popup-date { font-size: 1.3rem; margin-bottom: 1.5rem; }
 .event-item { text-align: left; padding: 1rem; border: 1px solid var(--color-border); border-left-width: 5px; border-radius: 8px; margin-bottom: 1rem; }
-/* BARU: Warna border diubah sesuai permintaan */
 .event-item.border-matkul { border-left-color: var(--color-green); }
 .event-item.border-libur { border-left-color: var(--color-red); }
 .event-item.border-event { border-left-color: var(--color-yellow); }
 .event-item h4 { font-size: 1.1rem; color: var(--color-accent); margin-bottom: 0.5rem; }
 .event-detail { display: flex; align-items: center; gap: 0.5rem; color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 0.25rem; }
 
-/* BARU DITAMBAHKAN: Schedule Sidebar (Rekapan) */
+/* Schedule Sidebar (Rekapan) */
 .schedule-sidebar {
     height: 100%;
     display: flex;
@@ -261,16 +278,35 @@ body {
 .sidebar-mascot svg { width: 150px; height: 150px; opacity: 0.7; }
 .sidebar-mascot svg path { transition: fill 0.3s ease; }
 
-/* --- BARU DITAMBAHKAN: Halaman Materi --- */
+/* --- Halaman Materi --- */
 .materi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
 .materi-card { display: flex; flex-direction: column; justify-content: space-between; min-height: 180px; background: linear-gradient(135deg, var(--color-accent), #3e4b9b); color: var(--color-white); cursor: pointer; transition: transform 0.2s ease; }
 .materi-card:hover { transform: translateY(-5px); }
-.materi-card-header h4 { font-size: 1.25rem; color: var(--color-white); margin-bottom: 0.25rem; }
+
+.materi-card-header h4 {
+    display: block; 
+    font-size: 1.25rem;
+    color: var(--color-white);
+    margin-bottom: 0.25rem;
+}
+
 .materi-card-header p { font-size: 0.9rem; opacity: 0.8; }
 .materi-card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; }
 .dosen-pic { width: 32px; height: 32px; border-radius: 50%; }
 .materi-popup { max-width: 600px; text-align: left; }
-#materi-popup-dosen { font-size: 1rem; color: var(--color-text-light); margin-bottom: 1.5rem; margin-top: -1rem; }
+
+/* --- PERBAIKAN 3: Bug Teks Materi (Popup) --- */
+#materi-popup-title {
+    margin-bottom: 0.25rem; /* Ditambahkan */
+}
+#materi-popup-dosen {
+    font-size: 1rem;
+    color: var(--color-text-light);
+    margin-bottom: 1.5rem;
+    margin-top: -0.5rem; /* Diubah dari -1rem */
+}
+/* ------------------------------------------ */
+
 .materi-popup-tabs { display: flex; border-bottom: 2px solid var(--color-border); margin-bottom: 1.5rem; }
 .tab-link { background: none; border: none; padding: 0.75rem 1rem; cursor: pointer; font-family: 'Poppins'; font-size: 1rem; font-weight: 500; color: var(--color-text-light); border-bottom: 3px solid transparent; }
 .tab-link.active { color: var(--color-primary); border-bottom-color: var(--color-primary); }
@@ -285,10 +321,17 @@ body {
 .materi-info small { display: block; color: var(--color-text-light); }
 .materi-item i[data-feather="download"], .materi-item i[data-feather="external-link"] { cursor: pointer; color: var(--color-text-light); }
 
-/* --- BARU DITAMBAHKAN: Halaman Nilai --- */
+/* --- Halaman Nilai --- */
 .nilai-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
 .nilai-ipk-card, .nilai-keaktifan-card { grid-column: span 1; text-align: center; }
-.nilai-chart-card { grid-column: 1 / -1; }
+
+.nilai-chart-card {
+    grid-column: 1 / -1;
+    min-height: 400px; 
+    display: flex;
+    flex-direction: column;
+}
+
 .nilai-rekap-card { grid-column: 1 / -1; }
 .ipk-display { font-size: 4rem; font-weight: 700; color: var(--color-accent); line-height: 1.2; }
 .heart-rating { font-size: 2rem; color: var(--color-primary); margin: 0.5rem 0; }
@@ -297,7 +340,7 @@ body {
 .rekap-list li { display: flex; justify-content: space-between; padding: 0.75rem; border-bottom: 1px solid var(--color-border); }
 .ipk-semester { font-weight: 700; color: var(--color-accent); }
 
-/* --- BARU DITAMBAHKAN: Halaman Kehadiran --- */
+/* --- Halaman Kehadiran --- */
 .kehadiran-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
 .kehadiran-card h4 { font-size: 1.1rem; }
 .kehadiran-card p { font-size: 0.9rem; color: var(--color-text-light); margin-bottom: 1rem; }
@@ -305,7 +348,7 @@ body {
 .progress-kehadiran { height: 100%; background-color: var(--color-green); border-radius: 8px; color: var(--color-white); font-weight: 500; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; transition: width 0.5s ease; }
 .kehadiran-card small { font-size: 0.8rem; color: var(--color-text-light); }
 
-/* --- BARU DITAMBAHKAN: Halaman Obrolan & Yume --- */
+/* --- Halaman Obrolan & Yume --- */
 .page#obrolan-page, .page#yume-page { padding: 0; }
 .chat-layout { display: grid; grid-template-columns: 320px 1fr; height: 100%; }
 .chat-sidebar { background: var(--color-white); border-right: 1px solid var(--color-border); display: flex; flex-direction: column; }
@@ -338,7 +381,7 @@ body {
 .yume-chat-header .chat-name { color: var(--color-primary); }
 .yume-chat-header .logo path { fill: var(--color-primary); }
 
-/* --- BARU DITAMBAHKAN: Halaman Pengaturan --- */
+/* --- Halaman Pengaturan --- */
 .pengaturan-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; max-width: 800px; }
 .form-group-pengaturan { display: grid; gap: 0.5rem; }
 .form-group-pengaturan label { text-align: left; font-weight: 500; margin-top: 0.5rem; }
@@ -349,6 +392,13 @@ body {
 .theme-btn.active { border-color: var(--color-primary); }
 .theme-btn span { width: 16px; height: 16px; border-radius: 50%; display: block; }
 .btn-danger { background-color: var(--color-red); color: var(--color-white); width: auto; padding: 0.75rem 1.5rem; }
+
+/* --- PERBAIKAN 2: Bug Grafik Nilai --- */
+#nilai-chart {
+    /* max-height: 350px; */ /* Dihapus */
+    width: 100% !important;
+}
+/* ----------------------------------- */
 
 
 /* RESPONSIVE DESIGN */

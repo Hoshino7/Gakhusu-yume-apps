@@ -46,11 +46,11 @@ document.addEventListener('DOMContentLoaded', function() {
             // Muat data dashboard
             getWeather();
             renderCalendar(); 
-            renderWeeklySummary(currentDate); // BARU: Render rekapan mingguan
+            renderWeeklySummary(currentDate); 
         }, 500);
     });
     
-    // --- BARU: LOGIKA TOMBOL KELUAR (LOGOUT) ---
+    // --- LOGIKA TOMBOL KELUAR (LOGOUT) ---
     const logoutBtn = document.getElementById('logout-btn');
     logoutBtn.addEventListener('click', (e) => {
         e.preventDefault();
@@ -69,21 +69,23 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- LOGIKA UTAMA APLIKASI (SETELAH LOGIN) ---
 
     // ELEMEN APLIKASI UTAMA
-    const sidebarMenu = document.getElementById('sidebar-menu');
+    // --- PERBAIKAN 4: Ubah target dari #sidebar-menu ke .sidebar ---
+    const sidebar = document.querySelector('.sidebar'); 
     const pages = document.querySelectorAll('.page');
     const notificationBellWrapper = document.querySelector('.notification-bell-wrapper');
     const notificationPanel = document.getElementById('notification-panel');
-    const sesiFokusBtn = document.getElementById('sesi-fokus-btn'); // BARU
-    const yumeWelcomePopup = document.getElementById('yume-welcome-popup'); // BARU
-    const yumeSalamKenalBtn = document.getElementById('yume-salam-kenal-btn'); // BARU
+    const sesiFokusBtn = document.getElementById('sesi-fokus-btn'); 
+    const yumeWelcomePopup = document.getElementById('yume-welcome-popup'); 
+    const yumeSalamKenalBtn = document.getElementById('yume-salam-kenal-btn'); 
 
     // NAVIGASI HALAMAN (SIDEBAR)
-    sidebarMenu.addEventListener('click', (e) => {
+    // --- PERBAIKAN 4: Pasang listener di .sidebar (seluruh <aside>) ---
+    sidebar.addEventListener('click', (e) => {
         e.preventDefault();
         const navItem = e.target.closest('.nav-item');
         if (!navItem) return;
         
-        // --- BARU: Logika untuk tombol Keluar di-handle terpisah ---
+        // --- Logika untuk tombol Keluar di-handle terpisah ---
         if (navItem.id === 'logout-btn') return; 
 
         const pageId = navItem.dataset.page;
@@ -92,20 +94,22 @@ document.addEventListener('DOMContentLoaded', function() {
         navigateToPage(pageId);
     });
     
-    // --- BARU: Fungsi untuk navigasi dan memicu event halaman ---
+    // --- Fungsi untuk navigasi dan memicu event halaman ---
     function navigateToPage(pageId) {
         // Hapus kelas 'active' dari semua menu item dan halaman
-        sidebarMenu.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+        // --- PERBAIKAN 4: Query seluruh .sidebar, bukan hanya #sidebar-menu ---
+        sidebar.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
         pages.forEach(page => page.classList.remove('active'));
 
         // Tambahkan kelas 'active' ke menu item dan halaman yang diklik
-        const activeNavItem = sidebarMenu.querySelector(`.nav-item[data-page="${pageId}"]`);
+        // --- PERBAIKAN 4: Query seluruh .sidebar ---
+        const activeNavItem = sidebar.querySelector(`.nav-item[data-page="${pageId}"]`);
         if (activeNavItem) {
             activeNavItem.classList.add('active');
         }
         document.getElementById(`${pageId}-page`).classList.add('active');
         
-        // --- BARU: Logika khusus saat halaman diaktifkan ---
+        // --- Logika khusus saat halaman diaktifkan ---
         if (pageId === 'yume') {
             checkFirstTimeYume();
         } else if (pageId === 'schedule') {
@@ -118,12 +122,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // --- BARU: Logika "Mulai Sesi Fokus" ---
+    // --- Logika "Mulai Sesi Fokus" ---
     sesiFokusBtn.addEventListener('click', () => {
         navigateToPage('yume');
     });
 
-    // --- BARU: Logika Pop-up Yume ---
+    // --- Logika Pop-up Yume ---
     function checkFirstTimeYume() {
         if (!localStorage.getItem('hasMetYume')) {
             yumeWelcomePopup.classList.add('show');
@@ -222,7 +226,7 @@ document.addEventListener('DOMContentLoaded', function() {
         feather.replace();
     }
     
-    // --- BARU: LOGIKA AI CHAT (GEMINI) ---
+    // --- LOGIKA AI CHAT (GEMINI) ---
     const yumeChatInput = document.getElementById('yume-chat-input');
     const yumeSendBtn = document.getElementById('yume-send-btn');
     const yumeChatMessages = document.getElementById('yume-chat-messages');
@@ -293,7 +297,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const closeSchedulePopupBtn = document.getElementById('close-schedule-popup-btn');
     const popupDateEl = document.getElementById('popup-date');
     const popupEventsEl = document.getElementById('popup-events');
-    const weeklySummaryContent = document.getElementById('weekly-summary-content'); // BARU
+    const weeklySummaryContent = document.getElementById('weekly-summary-content'); 
     
     let currentDate = new Date(2025, 9, 20); // Set to October 2025 for consistent demo
 
@@ -394,7 +398,7 @@ document.addEventListener('DOMContentLoaded', function() {
         daysGrid.innerHTML = daysHtml;
     }
     
-    // --- BARU: Fungsi untuk Render Rekapan Mingguan ---
+    // --- Fungsi untuk Render Rekapan Mingguan ---
     function renderWeeklySummary(date) {
         let html = '';
         const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
@@ -503,7 +507,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     
-    // --- BARU: LOGIKA HALAMAN MATERI (POPUP) ---
+    // --- LOGIKA HALAMAN MATERI (POPUP) ---
     const materiDetailPopup = document.getElementById('materi-detail-popup');
     const closeMateriPopupBtn = document.getElementById('close-materi-popup-btn');
     
@@ -535,7 +539,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById(tabContentId).classList.add('active');
     });
 
-    // --- BARU: LOGIKA HALAMAN NILAI (CHART) ---
+    // --- LOGIKA HALAMAN NILAI (CHART) ---
     let nilaiChart = null;
     function renderNilaiPage() {
         const ctx = document.getElementById('nilai-chart').getContext('2d');
@@ -572,6 +576,8 @@ document.addEventListener('DOMContentLoaded', function() {
             type: 'bar', // Anda bisa ganti ke 'pie' atau 'doughnut'
             data: data,
             options: {
+                responsive: true,
+                maintainAspectRatio: false, 
                 scales: {
                     y: {
                         beginAtZero: true,
@@ -582,7 +588,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // --- BARU: LOGIKA HALAMAN PENGATURAN ---
+    // --- LOGIKA HALAMAN PENGATURAN ---
     const themePinkBtn = document.getElementById('theme-pink-btn');
     const themeGreenBtn = document.getElementById('theme-green-btn');
     const themeBlueBtn = document.getElementById('theme-blue-btn');
