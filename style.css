@@ -170,7 +170,49 @@ body {
 .yume-card { display: flex; align-items: center; justify-content: space-between; gap: 1rem; background: linear-gradient(135deg, #FFC0CB, #FF8FAB); color: var(--color-white); overflow: hidden; }
 .btn-yume { background-color: var(--color-white); color: var(--color-primary); border: none; }
 .yume-mascot svg { width: 160px; height: 160px; display: block; transform: translateY(20px) translateX(10px); }
-.weather-card { display: flex; align-items: center; gap: 1rem; background: linear-gradient(135deg, var(--color-accent), #3e4b9b); color: var(--color-white); }
+
+/* --- PERBAIKAN GRAFIK & CUACA: Layout Kartu Cuaca --- */
+.weather-card {
+    display: flex;
+    flex-direction: column; /* Ubah ke column agar lebih rapi */
+    align-items: flex-start; /* Sejajarkan ke kiri */
+    gap: 0.5rem; /* Kurangi gap */
+    background: linear-gradient(135deg, var(--color-accent), #3e4b9b);
+    color: var(--color-white);
+    padding: 1.5rem; /* Pastikan padding konsisten */
+    border-radius: 16px;
+}
+.weather-card .location-info {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+.weather-card .temp-and-desc {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.5rem; /* Perbesar suhu */
+}
+.weather-card #weather-icon {
+    font-size: 2rem; /* Ukuran ikon lebih besar */
+    line-height: 1; /* Pastikan ikon tidak ada space tambahan */
+    display: flex; /* Untuk memastikan svg feather berada di tengah */
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.5rem; /* Sedikit jarak dengan teks */
+}
+.weather-card #weather-icon svg {
+    width: 28px; /* Ukuran icon feather */
+    height: 28px; /* Ukuran icon feather */
+}
+.weather-card #weather-temp {
+    font-weight: 700;
+}
+.weather-card #weather-desc {
+    font-size: 1rem; /* Ukuran deskripsi lebih kecil dari suhu */
+    opacity: 0.9;
+}
+/* ------------------------------------------------ */
+
 .tasks-card ul, .notification-list-card ul { list-style: none; padding-left: 0; }
 .tasks-card li, .notification-list-card li { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid var(--color-bg-light); font-size: 0.9rem; color: var(--color-text-light); }
 .due-date { background-color: var(--color-primary-light); color: var(--color-primary); padding: 0.25rem 0.5rem; border-radius: 8px; font-size: 0.8rem; font-weight: 500; transition: background-color 0.3s ease, color 0.3s ease; }
@@ -325,12 +367,23 @@ body {
 .nilai-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
 .nilai-ipk-card, .nilai-keaktifan-card { grid-column: span 1; text-align: center; }
 
+/* --- PERBAIKAN GRAFIK & CUACA: Ukuran Grafik --- */
 .nilai-chart-card {
     grid-column: 1 / -1;
-    min-height: 400px; 
+    min-height: 300px; /* Kurangi min-height */
     display: flex;
     flex-direction: column;
+    justify-content: center; /* Pusatkan konten grafik */
+    align-items: center;
+    padding: 1rem; /* Sedikit kurangi padding */
 }
+#nilai-chart {
+    max-width: 400px; /* Batasi lebar maksimum grafik */
+    max-height: 250px; /* Batasi tinggi maksimum grafik */
+    width: 100% !important;
+    height: 100% !important;
+}
+/* ------------------------------------------- */
 
 .nilai-rekap-card { grid-column: 1 / -1; }
 .ipk-display { font-size: 4rem; font-weight: 700; color: var(--color-accent); line-height: 1.2; }
@@ -393,13 +446,6 @@ body {
 .theme-btn span { width: 16px; height: 16px; border-radius: 50%; display: block; }
 .btn-danger { background-color: var(--color-red); color: var(--color-white); width: auto; padding: 0.75rem 1.5rem; }
 
-/* --- PERBAIKAN 2: Bug Grafik Nilai --- */
-#nilai-chart {
-    /* max-height: 350px; */ /* Dihapus */
-    width: 100% !important;
-}
-/* ----------------------------------- */
-
 
 /* RESPONSIVE DESIGN */
 @media (max-width: 1200px) {
@@ -424,4 +470,10 @@ body {
     .yume-card { flex-direction: column; text-align: center; }
     .weekdays div { font-size: 0.8rem; }
     .days-grid div { height: 60px; padding: 0.5rem; }
+
+    /* --- PERBAIKAN GRAFIK & CUACA: Layout Cuaca Responsif --- */
+    .weather-card { align-items: center; } /* Kembali ke tengah untuk mobile */
+    .weather-card .temp-and-desc { flex-direction: column; gap: 0.25rem; }
+    .weather-card #weather-icon { margin-right: 0; margin-bottom: 0.5rem; }
+    /* ---------------------------------------------------- */
 }

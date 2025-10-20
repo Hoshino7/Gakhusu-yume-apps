@@ -143,23 +143,16 @@ document.addEventListener('DOMContentLoaded', function() {
     notificationBellWrapper.addEventListener('mouseenter', () => notificationPanel.classList.add('show'));
     notificationBellWrapper.addEventListener('mouseleave', () => notificationPanel.classList.remove('show'));
 
-    // --- LOGIKA CUACA (DIPERBARUI) ---
+    // --- LOGIKA CUACA (DIPERBARUI DENGAN IKON) ---
     function getWeather() {
-        const weatherIconEl = document.getElementById('weather-icon'),
-              locationEl = document.getElementById('weather-location'),
-              tempEl = document.getElementById('weather-temp'),
-              descEl = document.getElementById('weather-desc');
-        
         // PENTING: Anda perlu API Key dari layanan cuaca (mis: OpenWeatherMap, WeatherAPI)
         const API_KEY = 'GANTI_DENGAN_API_KEY_ANDA'; // <-- Ganti ini!
         const KOTA = 'Balikpapan'; // Bisa juga diganti berdasarkan geolokasi
 
-        // URL Contoh (menggunakan WeatherAPI.com)
-        const API_URL = `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${KOTA}&aqi=no&lang=id`;
-
         /*
         // --- INI ADALAH KODE UNTUK MEMANGGIL API LIVE ---
         // (Dikomenti agar tidak error karena API Key belum ada)
+        const API_URL = `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${KOTA}&aqi=no&lang=id`;
 
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(position => {
@@ -169,22 +162,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 fetch(API_URL_GEO)
                     .then(response => response.json())
                     .then(data => {
-                        locationEl.textContent = `${data.location.name}, ${data.location.region}`;
-                        tempEl.textContent = `${data.current.temp_c}°C`;
-                        descEl.textContent = data.current.condition.text;
-                        
-                        // Mapping ikon (contoh)
-                        const iconCode = data.current.condition.icon;
-                        if (iconCode.includes('rain')) {
-                            weatherIconEl.innerHTML = '<i data-feather="cloud-rain"></i>';
-                        } else if (iconCode.includes('cloud')) {
-                            weatherIconEl.innerHTML = '<i data-feather="cloud"></i>';
-                        } else if (iconCode.includes('sun')) {
-                            weatherIconEl.innerHTML = '<i data-feather="sun"></i>';
-                        } else {
-                            weatherIconEl.innerHTML = '<i data-feather="cloud-sun"></i>';
-                        }
-                        feather.replace();
+                        updateWeatherDisplay(data.location.name, data.current.temp_c, data.current.condition.text, data.current.condition.icon);
                     })
                     .catch(err => {
                         console.error("Error fetching weather:", err);
@@ -206,24 +184,43 @@ document.addEventListener('DOMContentLoaded', function() {
         setDummyWeather(); 
     }
     
-    function setDummyWeather(errorMsg = null) {
+    // BARU: Fungsi untuk update tampilan cuaca
+    function updateWeatherDisplay(location, temp, description, iconCode = null) {
         const weatherIconEl = document.getElementById('weather-icon'),
               locationEl = document.getElementById('weather-location'),
               tempEl = document.getElementById('weather-temp'),
               descEl = document.getElementById('weather-desc');
-              
-        if (errorMsg) {
-            locationEl.textContent = errorMsg;
-            tempEl.textContent = '-°C';
-            weatherIconEl.innerHTML = '<i data-feather="slash"></i>';
-        } else {
-            // Data dummy jika fetch gagal atau belum disetup
-            locationEl.textContent = 'Jakarta, ID';
-            tempEl.textContent = '29°C';
-            descEl.textContent = 'Cerah Berawan';
-            weatherIconEl.innerHTML = '<i data-feather="cloud-sun"></i>';
+
+        locationEl.textContent = `${location}`;
+        tempEl.textContent = `${temp}°C`;
+        descEl.textContent = description;
+
+        let iconFeather = 'cloud'; // Default icon
+        if (iconCode) {
+            // Contoh mapping icon codes ke Feather Icons
+            if (iconCode.includes('sunny') || iconCode.includes('clear')) {
+                iconFeather = 'sun';
+            } else if (iconCode.includes('cloudy') || iconCode.includes('overcast')) {
+                iconFeather = 'cloud';
+            } else if (iconCode.includes('rain') || iconCode.includes('drizzle')) {
+                iconFeather = 'cloud-rain';
+            } else if (iconCode.includes('thunder')) {
+                iconFeather = 'cloud-lightning';
+            } else if (iconCode.includes('snow') || iconCode.includes('sleet')) {
+                iconFeather = 'cloud-snow';
+            }
         }
-        feather.replace();
+        weatherIconEl.innerHTML = `<i data-feather="${iconFeather}"></i>`;
+        feather.replace(); // Refresh icons
+    }
+
+    // Fungsi dummy sementara (menggunakan updateWeatherDisplay)
+    function setDummyWeather(errorMsg = null) {
+        if (errorMsg) {
+            updateWeatherDisplay(errorMsg, '-', 'Tidak Tersedia', 'slash'); // Slash icon for error
+        } else {
+            updateWeatherDisplay('Jakarta, ID', '29', 'Cerah Berawan', 'sunny');
+        }
     }
     
     // --- LOGIKA AI CHAT (GEMINI) ---
@@ -551,10 +548,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 label: 'Nilai Anda',
                 data: [100, 85, 78, 90], // Nilai (0-100)
                 backgroundColor: [
-                    'rgba(217, 70, 111, 0.2)',
-                    'rgba(30, 42, 120, 0.2)',
-                    'rgba(255, 190, 11, 0.2)',
-                    'rgba(42, 157, 143, 0.2)'
+                    'rgba(217, 70, 111, 0.7)', // Pink
+                    'rgba(30, 42, 120, 0.7)',  // Biru gelap
+                    'rgba(255, 190, 11, 0.7)', // Kuning
+                    'rgba(42, 157, 143, 0.7)'  // Hijau teal
                 ],
                 borderColor: [
                     'rgba(217, 70, 111, 1)',
@@ -571,19 +568,28 @@ document.addEventListener('DOMContentLoaded', function() {
             nilaiChart.destroy();
         }
 
-        // Buat chart baru
+        // --- PERBAIKAN GRAFIK: Ganti tipe chart ke 'doughnut' ---
         nilaiChart = new Chart(ctx, {
-            type: 'bar', // Anda bisa ganti ke 'pie' atau 'doughnut'
+            type: 'doughnut', // Ganti dari 'bar' ke 'doughnut'
             data: data,
             options: {
                 responsive: true,
                 maintainAspectRatio: false, 
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 100
+                plugins: {
+                    legend: {
+                        position: 'right', // Posisikan legend di kanan
+                        labels: {
+                            color: 'var(--color-text-secondary)', // Warna teks legend
+                            font: {
+                                size: 12, // Ukuran font legend
+                            }
+                        }
+                    },
+                    title: {
+                        display: false, // Tidak perlu judul tambahan di chart
                     }
-                }
+                },
+                // Hapus pengaturan scales untuk doughnut chart
             }
         });
     }
